@@ -1,0 +1,3 @@
+/home/thomii/IT Stuffs/Study/20202/Network Programming/Capstone Project/cpptris/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/thomii/IT Stuffs/Study/20202/Network Programming/Capstone Project/cpptris/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/thomii/IT Stuffs/Study/20202/Network Programming/Capstone Project/cpptris/cmake-build-debug/CMakeFiles/cpptris.dir
