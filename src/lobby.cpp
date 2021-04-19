@@ -48,7 +48,7 @@ private:
 
     string options[3] =
             {
-            "Singleplayer",
+            "Single player",
             "Join game",
             "Host game"
             };

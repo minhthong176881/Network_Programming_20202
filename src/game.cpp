@@ -237,7 +237,7 @@ public:
         char scr[10];
         sprintf(scr, "%06d", score);
 
-        text.setPosition(325, 0);
+        text.setPosition(350, 0);
         text.setString(scr);
         renderer.draw(text);
 
@@ -261,13 +261,13 @@ public:
 
             renderer.draw(rect);
 
-            text.setCharacterSize(96);
+            text.setCharacterSize(45);
             text.setPosition(80,700);
             text.setString("Game Over");
             renderer.draw(text);
 
 
-            text.setCharacterSize(36);
+            text.setCharacterSize(18);
             text.setPosition(80,800);
 
             if(client == NULL) {
@@ -277,7 +277,7 @@ public:
                 text.setString("Waiting for other players");
                 renderer.draw(text);
                 text.setPosition(75,900);
-                text.setString("ENTER to chill singleplayer");
+                text.setString("ENTER to chill single player");
                 renderer.draw(text);
             }
 
