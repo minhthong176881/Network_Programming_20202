@@ -1,5 +1,0 @@
-/home/thomii/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/211.6693.114/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/thomii/IT Stuffs/Study/20202/Network Programming/Capstone Project/cpptris"
--- Found SFML .. in /usr/include
--- Configuring done
--- Generating done
--- Build files have been written to: /home/thomii/IT Stuffs/Study/20202/Network Programming/Capstone Project/cpptris/cmake-build-debug
