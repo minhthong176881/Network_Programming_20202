@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
 
-    RenderWindow window(VideoMode(1200, 1080), "Cpptris");
+    RenderWindow window(VideoMode(1500, 1080), "Cpptris");
     Lobby lobby;
 
     Clock clock;
