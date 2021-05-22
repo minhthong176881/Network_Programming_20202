@@ -362,7 +362,7 @@ public:
         {
             lobbyText.setColor(Color(0, 255, 255));
             lobbyText.setCharacterSize(48);
-            lobbyText.setPosition(70, 1150);
+            lobbyText.setPosition(70, 300);
             lobbyText.setString(client->getName(client->getGameWinner()) + " won the round!");
             window.draw(lobbyText);
         }
