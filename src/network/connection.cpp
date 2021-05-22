@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <thread>
 #include <SFML/Network.hpp>
@@ -42,7 +41,7 @@ void Connection::run() {
 
     Packet namePacket;
 
-    if (socket->receive(namePacket) != sf::Socket::Done) {
+    if (socket->receive(namePacket) != Socket::Done) {
         cout << "Server couldnt get username from client " << endl;
         running = false;
         server->disconnect(id);
@@ -60,7 +59,7 @@ void Connection::run() {
 
     while(running){
         Packet packet;
-        if(socket->receive(packet)!=Socket::Done){
+        if(socket->receive(packet) != Socket::Done){
             cout << "Failed to receive pack from client " << endl;
             running = false;
             server->disconnect(id);
@@ -74,7 +73,7 @@ void Connection::run() {
 
             int world[10*20];
 
-            for(int i=0;i<10*20;i++){
+            for(int i = 0; i < 10*20; i++){
                 packet >> world[i];
             }
 
@@ -83,7 +82,7 @@ void Connection::run() {
             wPack << (int)PACKET_TYPE_WORLD;
             wPack << id;
 
-            for(int i=0;i<10*20;i++)
+            for(int i = 0; i < 10*20; i++)
                 wPack << world[i];
 
             server->sendAllExcept(id, wPack);
@@ -96,7 +95,7 @@ void Connection::run() {
             packet >> y;
 
             int piece[4*4];
-            for(int i=0;i<4*4;i++) {
+            for(int i = 0; i < 4*4; i++) {
                 packet >> piece[i];
             }
 
@@ -104,7 +103,7 @@ void Connection::run() {
             pPack << (int)PACKET_TYPE_PIECE;
             pPack << id << x << y;
 
-            for(int i=0;i<4*4;i++)
+            for(int i = 0; i < 4*4; i++)
                 pPack << piece[i];
 
             server->sendAllExcept(id, pPack);

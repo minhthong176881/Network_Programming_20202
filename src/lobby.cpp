@@ -1,4 +1,3 @@
-
 #include <string>
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -229,7 +228,7 @@ public:
             return;
         }
 
-        lobbyText.setColor(Color(255, 255, 255));
+        lobbyText.setFillColor(Color(255, 255, 255));
         lobbyText.setCharacterSize(64);
         lobbyText.setString("Tetris+");
         lobbyText.setPosition(70, 380);
@@ -251,24 +250,24 @@ public:
         {
             lobbyText.setCharacterSize(48);
             lobbyText.setPosition(100, 500);
-            lobbyText.setColor(Color(100, 100, 100));
+            lobbyText.setFillColor(Color(100, 100, 100));
             if (typing == Name)
                 lobbyText.setString("Enter name: ");
             else
                 lobbyText.setString("Enter address: ");
             window.draw(lobbyText);
-            lobbyText.setColor(Color(255, 255, 0));
+            lobbyText.setFillColor(Color(255, 255, 0));
             lobbyText.setPosition(100, 550);
             lobbyText.setString(typeText + "");
             window.draw(lobbyText);
-            lobbyText.setColor(Color(255, 255, 255));
+            lobbyText.setFillColor(Color(255, 255, 255));
         }
 
         if (state == Host)
         {
             lobbyText.setCharacterSize(48);
             lobbyText.setPosition(70, 450);
-            lobbyText.setColor(Color(255, 0, 0));
+            lobbyText.setFillColor(Color(255, 0, 0));
 
             if (server->isRunning())
             {
@@ -281,20 +280,20 @@ public:
                 window.draw(lobbyText);
 
                 lobbyText.setPosition(70, 820);
-                lobbyText.setColor(Color(255, 255, 0));
+                lobbyText.setFillColor(Color(255, 255, 0));
                 lobbyText.setString("Press escape to exit");
                 window.draw(lobbyText);
 
                 return;
             }
 
-            lobbyText.setColor(Color(255, 255, 255));
+            lobbyText.setFillColor(Color(255, 255, 255));
             lobbyText.setCharacterSize(48);
             lobbyText.setPosition(70, 600);
             lobbyText.setString("Players:");
             window.draw(lobbyText);
 
-            lobbyText.setColor(Color(100, 100, 100));
+            lobbyText.setFillColor(Color(100, 100, 100));
 
             for (int i = 0; i < 4; i++)
             {
@@ -305,7 +304,7 @@ public:
 
             if (typing == Nothing)
             {
-                lobbyText.setColor(Color(0, 255, 0));
+                lobbyText.setFillColor(Color(0, 255, 0));
                 lobbyText.setCharacterSize(48);
                 lobbyText.setPosition(70, 850);
                 lobbyText.setString("Press Enter to start");
@@ -318,20 +317,20 @@ public:
 
             lobbyText.setCharacterSize(48);
             lobbyText.setPosition(70, 500);
-            lobbyText.setColor(Color(255, 0, 0));
+            lobbyText.setFillColor(Color(255, 0, 0));
 
             if (client->isConnected())
             {
                 lobbyText.setString("Waiting for host...");
                 window.draw(lobbyText);
 
-                lobbyText.setColor(Color(255, 255, 255));
+                lobbyText.setFillColor(Color(255, 255, 255));
                 lobbyText.setCharacterSize(48);
                 lobbyText.setPosition(70, 600);
                 lobbyText.setString("Players:");
                 window.draw(lobbyText);
 
-                lobbyText.setColor(Color(100, 100, 100));
+                lobbyText.setFillColor(Color(100, 100, 100));
 
                 int index = 0;
                 for (int i = 0; i < 4; i++)
@@ -351,7 +350,7 @@ public:
                 window.draw(lobbyText);
 
                 lobbyText.setPosition(70, 750);
-                lobbyText.setColor(Color(255, 255, 0));
+                lobbyText.setFillColor(Color(255, 255, 0));
 
                 lobbyText.setString("Press ESC to exit");
                 window.draw(lobbyText);
@@ -360,7 +359,7 @@ public:
 
         if (client != NULL && client->isGameFinished())
         {
-            lobbyText.setColor(Color(0, 255, 255));
+            lobbyText.setFillColor(Color(0, 255, 255));
             lobbyText.setCharacterSize(48);
             lobbyText.setPosition(70, 300);
             lobbyText.setString(client->getName(client->getGameWinner()) + " won the round!");
@@ -406,7 +405,7 @@ public:
         int starty = 25;
         int startx = TILE_SIZE * 12 + 125;
 
-        lobbyText.setColor(Color(255, 255, 255));
+        lobbyText.setFillColor(Color(255, 255, 255));
         lobbyText.setCharacterSize(28);
 
         int usr = -1;

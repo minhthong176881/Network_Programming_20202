@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <algorithm>
 #include <SFML/Window.hpp>
@@ -12,11 +11,11 @@
 using namespace sf;
 using namespace std;
 
-class Game {
+class Game
+{
 
 private:
-
-    Client * client;
+    Client *client;
 
     RenderTexture renderer;
 
@@ -46,13 +45,14 @@ private:
     bool useClient = false;
 
 public:
-    Game(Client * client){
+    Game(Client *client)
+    {
         this->client = client;
 
-        if(client != NULL)
+        if (client != NULL)
             useClient = true;
 
-        renderer.create(10*TILE_SIZE, 20*TILE_SIZE);
+        renderer.create(10 * TILE_SIZE, 20 * TILE_SIZE);
 
         texture.loadFromFile("assets/tile.png");
         textureBlocked.loadFromFile("assets/blocked.png");
@@ -63,9 +63,11 @@ public:
 
         currentPiece = Piece();
 
-        for(int x=0;x<10;x++){
-            for(int y=0;y<20;y++){
-                tiles[x][y].setScale(TILE_SIZE/16.0, TILE_SIZE/16.0);
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                tiles[x][y].setScale(TILE_SIZE / 16.0, TILE_SIZE / 16.0);
             }
         }
 
@@ -74,10 +76,13 @@ public:
         game_reset();
     }
 
-    void update(float delta){
+    void update(float delta)
+    {
 
-        if(gameOver){
-            if(KeyboardManager::keyDown(Keyboard::Key::Enter)){
+        if (gameOver)
+        {
+            if (KeyboardManager::keyDown(Keyboard::Key::Enter))
+            {
                 game_reset();
                 useClient = false;
             }
@@ -86,25 +91,30 @@ public:
         }
         currentPiece.update(delta, speed, world);
 
-        if(useClient){
+        if (useClient)
+        {
             pieceClientUpdateTimer += delta;
 
-            if(pieceClientUpdateTimer>1/30.0){
+            if (pieceClientUpdateTimer > 1 / 30.0)
+            {
                 pieceClientUpdateTimer = 0;
                 client->updatePieceState(&currentPiece);
             }
         }
 
-        if(blockSenderTimer>0){
+        if (blockSenderTimer > 0)
+        {
             blockSenderTimer -= delta;
         }
 
-        if(currentPiece.isPiecePlaced()){
+        if (currentPiece.isPiecePlaced())
+        {
             pieces++;
 
-            if(currentPiece.isGameOver()){
+            if (currentPiece.isGameOver())
+            {
                 gameOver = true;
-                if(useClient)
+                if (useClient)
                     client->sendGameOver();
                 return;
             }
@@ -112,27 +122,32 @@ public:
             currentPiece = Piece();
             clear_lines();
 
-            while(useClient && client->addBlock()){
+            while (useClient && client->addBlock())
+            {
                 insertBlocked();
                 blockSenderTimer = 2.0f;
             }
 
-            if(pieces > level*50){
-                level ++;
+            if (pieces > level * 50)
+            {
+                level++;
                 speed *= 1.2;
             }
 
-            if(useClient)
+            if (useClient)
                 client->updateState(world);
         }
     }
 
-    void game_reset(){
+    void game_reset()
+    {
         gameOver = false;
         currentPiece = Piece();
 
-        for(int x=0;x<10;x++){
-            for(int y=0;y<20;y++){
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
                 world[x][y] = 0;
             }
         }
@@ -144,54 +159,75 @@ public:
         pieces = 0;
     }
 
-    void clear_lines(){
+    void clear_lines()
+    {
         int total = 0;
         bool line;
-        for(int y=0;y<20;y++){
+        for (int y = 0; y < 20; y++)
+        {
             line = true;
-            for(int x=0;x<10;x++){
-                if(world[x][y] == 0 || world[x][y] == 10){
+            for (int x = 0; x < 10; x++)
+            {
+                if (world[x][y] == 0 || world[x][y] == 10)
+                {
                     line = false;
                     break;
                 }
             }
-            if(line){
+            if (line)
+            {
                 moveWorldDown(y);
                 total++;
             }
         }
-        if(total>0) {
+        if (total > 0)
+        {
             add_score(total);
             streak++;
 
-            if(useClient && total==4) {
+            if (useClient && total == 4)
+            {
                 client->sendBlock();
             }
-        }else
+        }
+        else
             streak = 0;
     }
 
-    void moveWorldDown(int y){
-        for(; y > 0; y--){
-            for(int x=0;x<10;x++){
-                if(y==0) {
+    void moveWorldDown(int y)
+    {
+        for (; y > 0; y--)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                if (y == 0)
+                {
                     world[x][y] = 0;
-                }else {
+                }
+                else
+                {
                     world[x][y] = world[x][y - 1];
                 }
             }
         }
     }
 
-    void insertBlocked(){
-        for(int y=0; y < 20; y++){
-            for(int x=0;x<10;x++){
-                if(y==19) {
+    void insertBlocked()
+    {
+        for (int y = 0; y < 20; y++)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                if (y == 19)
+                {
                     world[x][y] = 10;
-                }else {
-                    if(y == 0 && world[x][y]){
+                }
+                else
+                {
+                    if (y == 0 && world[x][y])
+                    {
                         gameOver = true;
-                        if(useClient)
+                        if (useClient)
                             client->sendGameOver();
                     }
                     world[x][y] = world[x][y + 1];
@@ -200,37 +236,45 @@ public:
         }
     }
 
-    void add_score(int lines){
+    void add_score(int lines)
+    {
         float mult = (streak == 0) ? 1 : streak * 1.25;
-        if(lines == 4)
+        if (lines == 4)
             score += (int)(500.0 * mult);
         else
-            score += (int)(lines*100.0 * mult);
+            score += (int)(lines * 100.0 * mult);
     }
 
-    void draw(){
+    void draw()
+    {
         renderer.clear(Color::Black);
 
         currentPiece.draw(&renderer, texture);
 
-        for(int x=0;x<10;x++){
-            for(int y=0;y<20;y++){
-                if(world[x][y] > 0){
-                    if(world[x][y] == 10){
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                if (world[x][y] > 0)
+                {
+                    if (world[x][y] == 10)
+                    {
                         tiles[x][y].setColor(Color::White);
                         tiles[x][y].setTexture(textureBlocked);
-                    }else {
-                        tiles[x][y].setColor(PIECE_COLOR[world[x][y]-1]);
+                    }
+                    else
+                    {
+                        tiles[x][y].setColor(PIECE_COLOR[world[x][y] - 1]);
                         tiles[x][y].setTexture(texture);
                     }
-                    tiles[x][y].setPosition(Vector2f(x*TILE_SIZE, y*TILE_SIZE));
+                    tiles[x][y].setPosition(Vector2f(x * TILE_SIZE, y * TILE_SIZE));
                     renderer.draw(tiles[x][y]);
                 }
             }
         }
 
-        RectangleShape rect = RectangleShape(Vector2f(TILE_SIZE*10, 50));
-        rect.setFillColor(Color(50,50,50));
+        RectangleShape rect = RectangleShape(Vector2f(TILE_SIZE * 10, 50));
+        rect.setFillColor(Color(50, 50, 50));
         rect.setPosition(0, 0);
         renderer.draw(rect);
 
@@ -243,50 +287,52 @@ public:
 
         text.setPosition(10, 0);
         sprintf(scr, "%04d", level);
-        text.setString("LVL "+to_string(level));
+        text.setString("LVL " + to_string(level));
         renderer.draw(text);
 
-        if(blockSenderTimer>0) {
-            text.setColor(Color::Red);
+        if (blockSenderTimer > 0)
+        {
+            text.setFillColor(Color::Red);
             text.setPosition(20, 60);
-            text.setString(client->getBlockSender()+" sent a line!");
+            text.setString(client->getBlockSender() + " sent a line!");
             renderer.draw(text);
-            text.setColor(Color::White);
+            text.setFillColor(Color::White);
         }
 
-        if(gameOver){
-            RectangleShape rect = RectangleShape(Vector2f(TILE_SIZE*10, TILE_SIZE*3));
+        if (gameOver)
+        {
+            RectangleShape rect = RectangleShape(Vector2f(TILE_SIZE * 10, TILE_SIZE * 3));
             rect.setFillColor(Color::Red);
             rect.setPosition(0, 660);
 
             renderer.draw(rect);
 
             text.setCharacterSize(45);
-            text.setPosition(80,700);
+            text.setPosition(80, 700);
             text.setString("Game Over");
             renderer.draw(text);
 
-
             text.setCharacterSize(18);
-            text.setPosition(80,800);
+            text.setPosition(80, 800);
 
-            if(client == NULL) {
+            if (client == NULL)
+            {
                 text.setString("Press ENTER to play again");
                 renderer.draw(text);
-            }else {
+            }
+            else
+            {
                 text.setString("Waiting for other players");
                 renderer.draw(text);
-                text.setPosition(75,900);
+                text.setPosition(75, 900);
                 text.setString("ENTER to chill single player");
                 renderer.draw(text);
             }
-
-
         }
-
     }
 
-    RenderTexture * getRenderTexture(){
+    RenderTexture *getRenderTexture()
+    {
         renderer.display();
         return &renderer;
     }

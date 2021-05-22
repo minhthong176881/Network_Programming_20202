@@ -1,17 +1,15 @@
-#include <iostream>
-#include <algorithm>
-#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-
+#include <algorithm>
 #include "lobby.cpp"
 #include "keyboard.h"
 
 using namespace sf;
 using namespace std;
 
-int main() {
+int main()
+{
+    RenderWindow window(VideoMode(1200, 1080), "Cpptris");
 
-    RenderWindow window(VideoMode(1500, 1080), "Cpptris");
     Lobby lobby;
 
     Clock clock;
@@ -57,5 +55,3 @@ int main() {
 
     return 0;
 }
-
-

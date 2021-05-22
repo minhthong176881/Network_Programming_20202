@@ -1,4 +1,3 @@
-
 #include <string>
 #include <iostream>
 #include <thread>
@@ -42,7 +41,7 @@ void Client::connect(){
     while(connected){
 
         Packet dPack;
-        if (socket.receive(dPack) != sf::Socket::Done) {
+        if (socket.receive(dPack) != Socket::Done) {
             cout << "Server couldnt get pack from client " << endl;
             connected = false;
             return;
@@ -52,7 +51,7 @@ void Client::connect(){
         dPack >> type;
 
         if(type == PACKET_TYPE_LOBBY){
-            for(int i=0;i<4;i++){
+            for(int i = 0; i < 4; i++){
                 dPack >> users[i];
             }
         }else if(type == PACKET_TYPE_START){
@@ -127,7 +126,7 @@ void Client::send(Packet packet){
 
 Client::Client(string name, string addr){
 
-    for(int i=0;i<4;i++)
+    for(int i = 0; i < 4; i++)
         users[i] = "";
 
     resetState();
@@ -136,7 +135,7 @@ Client::Client(string name, string addr){
 
     cout << "Starting client with name " << name << endl;
 
-    for(int i=0;i<4;i++){
+    for(int i = 0; i < 4; i++){
         users[i] = "?";
     }
 
@@ -148,11 +147,11 @@ Client::Client(string name, string addr){
 void Client::resetState(){
     cout << "Client reset state " << endl;
     // Reset users
-    for(int i=0;i<4;i++) {
+    for(int i = 0; i < 4; i++) {
         gameOver[i] = false;
         for (int x = 0; x < 10 * 20; x++)
             userWorlds[i][x] = 0;
-        for(int x=0;x<4*4;x++)
+        for(int x = 0; x < 4*4; x++)
             userPiece[i][x] = 0;
     }
     addBlockCount = 0;
@@ -161,7 +160,7 @@ void Client::resetState(){
 void Client::updateState(int (&world)[10][20]){
     Packet packet;
     packet << (int)PACKET_TYPE_WORLD;
-    for(int i=0;i<10*20;i++){
+    for(int i = 0; i < 10*20; i++){
         packet << world[i%10][i/10];
     }
     cout << "Client sending world" << endl;
@@ -175,7 +174,7 @@ void Client::updatePieceState(Piece* piece) {
     packet << piece->getY();
 
     int *block = piece->getBlock();
-    for(int i=0;i<4*4;i++){
+    for(int i = 0;i < 4*4; i++){
         packet << block[i];
     }
 

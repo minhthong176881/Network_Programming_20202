@@ -1,4 +1,3 @@
-
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
@@ -10,9 +9,10 @@ namespace KeyboardManager {
         Down,
         Pressed
     };
+
     void keyboardUpdate(bool focus);
     bool keyDown(sf::Keyboard::Key key);
     bool keyPressed(sf::Keyboard::Key key);
-};
+}
 
-#endif //KEYBOARD_H
+#endif

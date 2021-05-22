@@ -1,4 +1,3 @@
-
 #ifndef CLIENT_H
 #define CLIENT_H
 
@@ -6,19 +5,22 @@
 #include <SFML/Network.hpp>
 #include "../piece.h"
 
+using namespace std;
+using namespace sf;
+
 class Client {
 
 private:
 
-    sf::TcpSocket socket;
+    TcpSocket socket;
     bool connected = false;
 
-    std::string address;
+    string address;
 
     char username[25];
     int id;
 
-    std::string * users = new std::string[4];
+    string * users = new string[4];
     int userWorlds[4][10*20];
 
     int addBlockCount = 0;
@@ -34,17 +36,17 @@ private:
     int gameWinner = 0;
 
     void connect();
-    void send(sf::Packet packet);
+    void send(Packet packet);
 
 public:
-    Client(std::string name, std::string address);
+    Client(string name, string address);
     void resetState();
     void updateState(int (&world)[10][20]);
     void updatePieceState(Piece* piece);
     void sendGameOver();
     void sendBlock();
     bool isConnected();
-    std::string getName(int i);
+    string getName(int i);
     bool isGameStarted();
     int* getUserWorld(int usr);
     float * getPiecePosition(int usr);

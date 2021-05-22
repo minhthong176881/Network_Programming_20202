@@ -1,3 +1,0 @@
-/home/ductiendo/Workspaces/ICT/4/NetworkProgramming/Network_Programming_20202/build/CMakeFiles/rebuild_cache.dir
-/home/ductiendo/Workspaces/ICT/4/NetworkProgramming/Network_Programming_20202/build/CMakeFiles/edit_cache.dir
-/home/ductiendo/Workspaces/ICT/4/NetworkProgramming/Network_Programming_20202/build/CMakeFiles/cpptris.dir
