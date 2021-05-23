@@ -17,9 +17,12 @@ private:
     bool running;
 public:
     Connection(int id, Server* server, TcpSocket* socket);
+    // Send the packet to the server of client
     void send(Packet packet);
     void run();
+    // Stop the socket connection
     void stop();
+    // Get player name
     string getName();
 };
 

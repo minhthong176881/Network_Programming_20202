@@ -10,123 +10,163 @@
 using namespace sf;
 using namespace std;
 
-void Client::connect(){
+void Client::connect()
+{
 
     connected = true;
 
-    if(socket.connect(this->address, 31621) != Socket::Done){
+    // Request to connect to the server at port 31621
+    if (socket.connect(this->address, 31621) != Socket::Done)
+    {
         cout << "Client failed to connect to server" << endl;
         connected = false;
         return;
     }
 
     cout << "Sending username to server... " << endl;
+    // Create a packet to send player's data
     Packet userPacket;
+    // Write player's name into the packet
     userPacket << username;
-    if(socket.send(userPacket) != Socket::Done){
+    // Send the packet to the server
+    if (socket.send(userPacket) != Socket::Done)
+    {
         cout << "Failed to send username" << endl;
         connected = false;
         return;
     }
 
+    // Create a packet to recieve the id from the server
     Packet idPacket;
-    if(socket.receive(idPacket) != Socket::Done){
-        cout << "Failed to get ID froms server" << endl;
+    if (socket.receive(idPacket) != Socket::Done)
+    {
+        cout << "Failed to get ID from server" << endl;
         connected = false;
         return;
     }
+    // Read the id of the player from the packet
     idPacket >> id;
     cout << "Client started with ID " << id << endl;
 
-    while(connected){
+    while (connected)
+    {
 
+        // Create a packet to recieve data from the server
         Packet dPack;
-        if (socket.receive(dPack) != Socket::Done) {
-            cout << "Server couldnt get pack from client " << endl;
+        if (socket.receive(dPack) != Socket::Done)
+        {
+            cout << "Server couldn't get pack from client " << endl;
             connected = false;
             return;
         }
 
         int type;
+        // Read the type from the packet
         dPack >> type;
 
-        if(type == PACKET_TYPE_LOBBY){
-            for(int i = 0; i < 4; i++){
+        if (type == PACKET_TYPE_LOBBY)
+        {
+            // Read the players's name from the packet
+            for (int i = 0; i < 4; i++)
+            {
                 dPack >> users[i];
             }
-        }else if(type == PACKET_TYPE_START){
+        }
+        else if (type == PACKET_TYPE_START)
+        {
+            // Set game state to start
             gameStarted = true;
             gameFinished = false;
-        }else if(type == PACKET_TYPE_WORLD) {
+        }
+        else if (type == PACKET_TYPE_WORLD)
+        {
 
             int id = 0;
             int world[10 * 20];
 
+            // Read the player's id from the packet
             dPack >> id;
 
-            for (int i = 0; i < 10 * 20; i++) {
+            // Read the player's world data from the packet
+            for (int i = 0; i < 10 * 20; i++)
+            {
                 dPack >> world[i];
             }
 
             cout << "Client got world from " << id << endl;
+            // Copy the reveived world data to coresponding player's world
             memcpy(userWorlds[id], world, sizeof(world));
-
-        }else if(type == PACKET_TYPE_PIECE) {
+        }
+        else if (type == PACKET_TYPE_PIECE)
+        {
 
             int id;
             float x, y;
 
+            // Read the player's id, position x and y of the piece from the packet
             dPack >> id;
             dPack >> x;
             dPack >> y;
 
+            // Set piece position of player with id = id
             userPiecePosition[id][0] = x;
             userPiecePosition[id][1] = y;
 
+            // Read the piece from the packet
             for (int i = 0; i < 4 * 4; i++)
                 dPack >> userPiece[id][i];
+        }
+        else if (type == PACKET_TYPE_BLOCK)
+        {
 
-        }else if(type == PACKET_TYPE_BLOCK){
-
+            // Read the block sender from the packet
             addBlockCount++;
             dPack >> blockSender;
-
-        }else if(type == PACKET_TYPE_GAMEOVER){
+        }
+        else if (type == PACKET_TYPE_GAMEOVER)
+        {
 
             int id;
+            // Read player's id from the packet
             dPack >> id;
 
+            // Set game over state of corresponding player to true
             gameOver[id] = true;
-
-        }else if(type == PACKET_TYPE_FINISHGAME){
+        }
+        else if (type == PACKET_TYPE_FINISHGAME)
+        {
 
             int winner;
+            // Read the winner of the game from the packet
             dPack >> winner;
 
+            // Reset the state of the game
             resetState();
 
             gameStarted = false;
             gameFinished = true;
             gameWinner = winner;
-
-        }else {
+        }
+        else
+        {
             cout << "Client got unknown pack type " << type;
         }
-
     }
-
 }
 
-void Client::send(Packet packet){
-    if(socket.send(packet) != Socket::Done){
+void Client::send(Packet packet)
+{
+    if (socket.send(packet) != Socket::Done)
+    {
         cout << "Failed to send pack from client " << endl;
     }
 }
 
+Client::Client(string name, string addr)
+{
 
-Client::Client(string name, string addr){
-
-    for(int i = 0; i < 4; i++)
+    // Initialize players
+    for (int i = 0; i < 4; i++)
         users[i] = "";
 
     resetState();
@@ -135,113 +175,146 @@ Client::Client(string name, string addr){
 
     cout << "Starting client with name " << name << endl;
 
-    for(int i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++)
+    {
         users[i] = "?";
     }
 
+    // Set the current player's name
     memcpy(username, name.c_str(), 25);
-    thread th (&Client::connect, this);
+    thread th(&Client::connect, this);
     th.detach();
 }
 
-void Client::resetState(){
+void Client::resetState()
+{
     cout << "Client reset state " << endl;
-    // Reset users
-    for(int i = 0; i < 4; i++) {
+    // Reset players
+    for (int i = 0; i < 4; i++)
+    {
         gameOver[i] = false;
+        // Reset worlds
         for (int x = 0; x < 10 * 20; x++)
             userWorlds[i][x] = 0;
-        for(int x = 0; x < 4*4; x++)
+        // Reset pieces
+        for (int x = 0; x < 4 * 4; x++)
             userPiece[i][x] = 0;
     }
     addBlockCount = 0;
 }
 
-void Client::updateState(int (&world)[10][20]){
+void Client::updateState(int (&world)[10][20])
+{
+    // Create a packet to send updated world to the server
     Packet packet;
+    // Write world type and world data into the packet
     packet << (int)PACKET_TYPE_WORLD;
-    for(int i = 0; i < 10*20; i++){
-        packet << world[i%10][i/10];
+    for (int i = 0; i < 10 * 20; i++)
+    {
+        packet << world[i % 10][i / 10];
     }
     cout << "Client sending world" << endl;
     send(packet);
 }
 
-void Client::updatePieceState(Piece* piece) {
+void Client::updatePieceState(Piece *piece)
+{
+    // Create a packet to send piece state to the server
     Packet packet;
+    // Write piece type and positions of the piece into the packet
     packet << (int)PACKET_TYPE_PIECE;
     packet << piece->getX();
     packet << piece->getY();
 
+    // Get block of the piece
     int *block = piece->getBlock();
-    for(int i = 0;i < 4*4; i++){
+    // Write the block into the packet
+    for (int i = 0; i < 4 * 4; i++)
+    {
         packet << block[i];
     }
 
     send(packet);
 }
 
-void Client::sendGameOver() {
+void Client::sendGameOver()
+{
+    // Create a packet to send game over type to the server
     Packet packet;
+    // Write game over type into the packet
     packet << (int)PACKET_TYPE_GAMEOVER;
     send(packet);
 }
 
-void Client::sendBlock() {
+void Client::sendBlock()
+{
+    // Create a packet to send block type to the server
     Packet packet;
+    // Write block type into the packet
     packet << (int)PACKET_TYPE_BLOCK;
     send(packet);
 }
 
-bool Client::isConnected(){
+bool Client::isConnected()
+{
     return connected;
 }
 
-int Client::getId(){
+int Client::getId()
+{
     return id;
 }
 
-string Client::getName(int i){
+string Client::getName(int i)
+{
     return users[i];
 }
 
-bool Client::isGameStarted(){
+bool Client::isGameStarted()
+{
     return gameStarted;
 }
 
-int *Client::getUserWorld(int usr){
+int *Client::getUserWorld(int usr)
+{
     return userWorlds[usr];
 }
 
-float * Client::getPiecePosition(int usr) {
+float *Client::getPiecePosition(int usr)
+{
     return userPiecePosition[usr];
 }
 
-int * Client::getPiece(int usr) {
+int *Client::getPiece(int usr)
+{
     return userPiece[usr];
 }
-bool Client::getGameOver(int usr) {
+bool Client::getGameOver(int usr)
+{
     return gameOver[usr];
 }
 
-bool Client::addBlock() {
-    if(addBlockCount>0){
+bool Client::addBlock()
+{
+    if (addBlockCount > 0)
+    {
         addBlockCount--;
         return true;
     }
     return false;
 }
 
-string Client::getBlockSender(){
+string Client::getBlockSender()
+{
     return users[blockSender];
 }
 
-
-bool Client::isGameFinished() {
+bool Client::isGameFinished()
+{
     return gameFinished;
 }
 
-int Client::getGameWinner() {
+int Client::getGameWinner()
+{
     return gameWinner;
 }
-
