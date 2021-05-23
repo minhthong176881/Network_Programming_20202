@@ -10,7 +10,9 @@ using namespace sf;
 class Server {
 public:
     Server();
+    // Get player name
     string getName(int player);
+    // Send name among the player
     void sendLobbyData();
     void sendAll(Packet packet);
     void sendAllExcept(int id, Packet packet);

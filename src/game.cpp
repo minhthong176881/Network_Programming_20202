@@ -57,7 +57,7 @@ public:
         texture.loadFromFile("assets/tile.png");
         textureBlocked.loadFromFile("assets/blocked.png");
 
-        font.loadFromFile("assets/font.otf");
+        font.loadFromFile("assets/font.TTF");
         text.setFont(font);
         text.setCharacterSize(36);
 

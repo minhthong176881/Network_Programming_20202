@@ -61,7 +61,7 @@ public:
     Lobby()
     {
         state = None;
-        lobbyFont.loadFromFile("assets/font.otf");
+        lobbyFont.loadFromFile("assets/font.TTF");
         lobbyText.setFont(lobbyFont);
         lobbyText.setCharacterSize(48);
         texture.loadFromFile("assets/tile.png");
