@@ -66,12 +66,12 @@ class Piece
 private:
     int type;
 
-    Sprite sprites[4][4];
+    Sprite sprites[4][4]; // Draw the piece
     int piece[4][4];
 
     int x = 3;
     float y = -3;
-    int shadowY = -3;
+    int shadowY = -3; // The shadow of the piece, allow us to see where the piece will be placed
 
     float moveRightTimer = 0;
     float moveLeftTimer = 0;
@@ -85,15 +85,24 @@ private:
 
 public:
     Piece();
+    // Update properties of the piece
     void update(float alpha, float speed, int (&world)[10][20]);
+    // Rotate the piece
     void rotate(int (&world)[10][20]);
+    // Check if the place position of the piece is available
     bool placeFree(int x, int y, int (&world)[10][20]);
     void fillWorld(int (&world)[10][20]);
+    // Draw the piece
     void draw(RenderTexture *render, Texture texture);
+    // Get x position of the piece
     float getX();
+    // Get y position of the piece
     float getY();
+    // Get the block of the piece
     int *getBlock();
+    // Check if the piece is placed
     bool isPiecePlaced();
+    // Check if the game is over
     bool isGameOver();
 };
 

@@ -52,6 +52,7 @@ public:
         if (client != NULL)
             useClient = true;
 
+        // Render game
         renderer.create(10 * TILE_SIZE, 20 * TILE_SIZE);
 
         texture.loadFromFile("assets/tile.png");
@@ -81,6 +82,7 @@ public:
 
         if (gameOver)
         {
+            // If game is over, press ENTER to reset the game
             if (KeyboardManager::keyDown(Keyboard::Key::Enter))
             {
                 game_reset();

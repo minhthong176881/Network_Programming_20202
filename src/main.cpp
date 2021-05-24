@@ -36,7 +36,7 @@ int main()
             if(event.type == Event::TextEntered){
                 if(focus) {
                     if (event.text.unicode < 128)
-                        lobby.text_input(static_cast<char>(event.text.unicode));
+                        lobby.textInput(static_cast<char>(event.text.unicode));
                 }
             }
         }

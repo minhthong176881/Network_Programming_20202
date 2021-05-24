@@ -24,7 +24,7 @@ private:
     int userWorlds[4][10*20]; // 4 players and size of the world 10*20
 
     int addBlockCount = 0;
-    int blockSender = 0; 
+    int blockSender = 0; // id of player who sends block to other players
 
     float userPiecePosition[4][2]; // 4 players and 2 positions of x and y
     int userPiece[4][4*4]; // 4 player and form of the piece
@@ -68,6 +68,7 @@ public:
     bool isGameFinished();
     // Get the winner of the game
     int getGameWinner();
+    // Add block to other player if one player removes multiple line at once
     bool addBlock();
     // Get the block sender
     string getBlockSender();

@@ -11,6 +11,7 @@ using namespace sf;
 
 Piece::Piece()
 {
+    // Get the shape and color of the piece
     type = rand() % 7;
     switch (type)
     {
@@ -55,11 +56,13 @@ void Piece::update(float delta, float speed, int (&world)[10][20])
 
     if (!isDropping)
     {
+        // Press UP ARROW to rotate the piece
         if (KeyboardManager::keyDown(Keyboard::Up))
         {
             rotate(world);
         }
 
+        // Press LEFT ARROW to move the piece to the left
         if (KeyboardManager::keyPressed(Keyboard::Left))
         {
             if (moveLeftTimer >= 0)
@@ -73,6 +76,7 @@ void Piece::update(float delta, float speed, int (&world)[10][20])
         else
             moveLeftTimer = 0;
 
+        // Press RIGHT ARROW to move the piece to the right
         if (KeyboardManager::keyPressed(Keyboard::Right))
         {
             if (moveRightTimer >= 0)
@@ -88,26 +92,32 @@ void Piece::update(float delta, float speed, int (&world)[10][20])
 
         shadowY = y;
 
+        // If the place position (x, shadowY + 1) is valid, increase the shadowY
         while (placeFree(x, shadowY + 1, world))
         {
             shadowY++;
         }
 
+        // Press SPACE to drop the piece
         if (KeyboardManager::keyDown(Keyboard::Space))
         {
             isDropping = true;
         }
     }
 
+    // Increase y by multiply with the speed and delta coefficient
     y += delta * 3 * speed;
 
     if (isDropping) {
+        // If the piece is dropping, increase y by multiply with the dropping speed and delta coefficient
         y += delta * dropSpeed;
         dropSpeed += delta * 500;
     } else if (KeyboardManager::keyPressed(Keyboard::Down))
+        // Press DOWN ARROW to drop faster
         y += delta * 9 * speed;
 
     if (!placeFree(x, py + 1, world)) {
+        // When the piece is place
         y = shadowY;
         placeTimer += delta;
         if (placeTimer > .4f || isDropping) {
@@ -145,6 +155,7 @@ void Piece::rotate(int (&world)[10][20]) {
 }
 
 bool Piece::placeFree(int px, int py, int (&world)[10][20]) {
+    // px and py are the position that the piece will be place
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (piece[j][i]) {

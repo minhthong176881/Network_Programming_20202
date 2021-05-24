@@ -56,7 +56,6 @@ private:
     int selected = 0;
 
 public:
-    static bool KEYBOARD_FOCUS;
 
     Lobby()
     {
@@ -193,7 +192,7 @@ public:
         }
     }
 
-    void text_input(char c)
+    void textInput(char c)
     {
         if (!isalpha(c) && !isdigit(c) && !(c == ' ') && !(c == '.'))
             return;
@@ -221,7 +220,7 @@ public:
 
             if (state != Singleplayer)
             {
-                draw_next_piece_window(window);
+                drawNextPieceWindow(window);
                 drawUserWorlds(window);
             }
 
@@ -367,7 +366,7 @@ public:
         }
     }
 
-    void draw_next_piece_window(RenderWindow &window)
+    void drawNextPieceWindow(RenderWindow &window)
     {
         int start_posx = 30 + TILE_SIZE * 10 + 50;
         int start_posy = 25;
