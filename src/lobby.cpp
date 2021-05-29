@@ -49,7 +49,7 @@ private:
 
     string options[3] =
         {
-            "Singleplayer",
+            "Single player",
             "Join game",
             "Host game"};
 
@@ -229,7 +229,7 @@ public:
 
         lobbyText.setFillColor(Color(255, 255, 255));
         lobbyText.setCharacterSize(64);
-        lobbyText.setString("Tetris+");
+        lobbyText.setString("Tetris++");
         lobbyText.setPosition(70, 380);
         window.draw(lobbyText);
 
