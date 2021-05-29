@@ -21,7 +21,8 @@ private:
         None,
         Join,
         Host,
-        Singleplayer
+        Singleplayer,
+        // Exit
     };
 
     enum Typing
@@ -49,9 +50,11 @@ private:
 
     string options[3] =
         {
-            "Singleplayer",
+            "Single player",
             "Join game",
-            "Host game"};
+            "Host game",
+            // "Exit game"
+        };
 
     int selected = 0;
 
@@ -280,7 +283,7 @@ public:
 
                 lobbyText.setPosition(70, 820);
                 lobbyText.setFillColor(Color(255, 255, 0));
-                lobbyText.setString("Press escape to exit");
+                lobbyText.setString("Press ESC to exit");
                 window.draw(lobbyText);
 
                 return;
@@ -306,7 +309,7 @@ public:
                 lobbyText.setFillColor(Color(0, 255, 0));
                 lobbyText.setCharacterSize(48);
                 lobbyText.setPosition(70, 850);
-                lobbyText.setString("Press Enter to start");
+                lobbyText.setString("Press ENTER to start");
                 window.draw(lobbyText);
             }
         }

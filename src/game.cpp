@@ -74,7 +74,7 @@ public:
 
         cout << "Started new game, using client: " << useClient << endl;
 
-        game_reset();
+        gameReset();
     }
 
     void update(float delta)
@@ -85,7 +85,7 @@ public:
             // If game is over, press ENTER to reset the game
             if (KeyboardManager::keyDown(Keyboard::Key::Enter))
             {
-                game_reset();
+                gameReset();
                 useClient = false;
             }
             blockSenderTimer = 0;
@@ -122,7 +122,7 @@ public:
             }
 
             currentPiece = Piece();
-            clear_lines();
+            clearLines();
 
             while (useClient && client->addBlock())
             {
@@ -141,7 +141,7 @@ public:
         }
     }
 
-    void game_reset()
+    void gameReset()
     {
         gameOver = false;
         currentPiece = Piece();
@@ -161,7 +161,7 @@ public:
         pieces = 0;
     }
 
-    void clear_lines()
+    void clearLines()
     {
         int total = 0;
         bool line;
@@ -184,7 +184,7 @@ public:
         }
         if (total > 0)
         {
-            add_score(total);
+            addScore(total);
             streak++;
 
             if (useClient && total == 4)
@@ -238,7 +238,7 @@ public:
         }
     }
 
-    void add_score(int lines)
+    void addScore(int lines)
     {
         float mult = (streak == 0) ? 1 : streak * 1.25;
         if (lines == 4)
@@ -315,7 +315,7 @@ public:
             renderer.draw(text);
 
             text.setCharacterSize(18);
-            text.setPosition(80, 800);
+            text.setPosition(50, 800);
 
             if (client == NULL)
             {
