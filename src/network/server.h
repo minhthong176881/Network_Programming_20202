@@ -10,14 +10,15 @@ using namespace sf;
 class Server {
 public:
     Server();
-    // Get player name
+    // Get player's name
     string getName(int player);
-    // Send name among the player
+    // Send names among the players
     void sendLobbyData();
     // Send packet to all players
     void sendAll(Packet packet);
     // Send packet to players other than current player
     void sendAllExcept(int id, Packet packet);
+    // Start the server
     void run();
     // Start the game
     void startGame();

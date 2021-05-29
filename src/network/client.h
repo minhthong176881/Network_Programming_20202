@@ -23,7 +23,7 @@ private:
     string * users = new string[4];
     int userWorlds[4][10*20]; // 4 players and size of the world 10*20
 
-    int addBlockCount = 0;
+    int addBlockCount = 0; // Number of players that will be sent blocks
     int blockSender = 0; // id of player who sends block to other players
 
     float userPiecePosition[4][2]; // 4 players and 2 positions of x and y
