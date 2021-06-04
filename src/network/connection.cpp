@@ -8,7 +8,8 @@
 using namespace sf;
 using namespace std;
 
-Connection::Connection(int id, Server* server, TcpSocket* socket){
+Connection::Connection(int id, Server *server, TcpSocket *socket)
+{
 
     cout << "Starting client connection " << endl;
 
@@ -20,29 +21,33 @@ Connection::Connection(int id, Server* server, TcpSocket* socket){
 
     thread th(&Connection::run, this);
     th.detach();
-
 }
 
-void Connection::send(Packet packet){
-    if(socket->send(packet) != sf::Socket::Done){
+void Connection::send(Packet packet)
+{
+    if (socket->send(packet) != sf::Socket::Done)
+    {
         cout << "Server failed to send packet to " << username << endl;
         running = false;
         server->disconnect(id);
     }
 }
 
-void Connection::stop(){
+void Connection::stop()
+{
     running = false;
     socket->disconnect();
 }
 
-void Connection::run() {
+void Connection::run()
+{
     cout << "Getting client name... " << endl;
 
     // Create a packet to receive player's name
     Packet namePacket;
 
-    if (socket->receive(namePacket) != Socket::Done) {
+    if (socket->receive(namePacket) != Socket::Done)
+    {
         cout << "Server couldnt get username from client " << endl;
         running = false;
         server->disconnect(id);
@@ -53,7 +58,7 @@ void Connection::run() {
     namePacket >> username;
     cout << "Server got name: " << username << endl;
 
-    // Create a packet to write player's id 
+    // Create a packet to write player's id
     Packet idPacket;
     // Write player's id into the packet
     idPacket << id;
@@ -62,10 +67,12 @@ void Connection::run() {
     // Update lobby data
     server->sendLobbyData();
 
-    while(running){
+    while (running)
+    {
         // Create a packet to receive data
         Packet packet;
-        if(socket->receive(packet) != Socket::Done){
+        if (socket->receive(packet) != Socket::Done)
+        {
             cout << "Failed to receive pack from client " << endl;
             running = false;
             server->disconnect(id);
@@ -76,13 +83,15 @@ void Connection::run() {
         // Read packet type from the packet
         packet >> type;
 
-        if(type == PACKET_TYPE_WORLD){
-            
+        if (type == PACKET_TYPE_WORLD)
+        {
+
             // Create player's world
-            int world[10*20];
+            int world[10 * 20];
 
             // Read player's world data from the packet
-            for(int i = 0; i < 10*20; i++){
+            for (int i = 0; i < 10 * 20; i++)
+            {
                 packet >> world[i];
             }
 
@@ -93,23 +102,25 @@ void Connection::run() {
             wPack << (int)PACKET_TYPE_WORLD;
             wPack << id;
 
-            for(int i = 0; i < 10*20; i++)
+            for (int i = 0; i < 10 * 20; i++)
                 wPack << world[i];
 
             // Send player's world data to other players
             server->sendAllExcept(id, wPack);
+        }
+        else if (type == PACKET_TYPE_PIECE)
+        {
 
-        }else if(type == PACKET_TYPE_PIECE){
-
-            float x,y;
+            float x, y;
 
             // Read the position of the piece from the packet
             packet >> x;
             packet >> y;
 
             // Read the piece from the packet
-            int piece[4*4];
-            for(int i = 0; i < 4*4; i++) {
+            int piece[4 * 4];
+            for (int i = 0; i < 4 * 4; i++)
+            {
                 packet >> piece[i];
             }
 
@@ -121,19 +132,22 @@ void Connection::run() {
             pPack << id << x << y;
 
             // Write piece form into the packet
-            for(int i = 0; i < 4*4; i++)
+            for (int i = 0; i < 4 * 4; i++)
                 pPack << piece[i];
 
             server->sendAllExcept(id, pPack);
-
-        }else if(type == PACKET_TYPE_BLOCK){
+        }
+        else if (type == PACKET_TYPE_BLOCK)
+        {
             // Create a packet to send block data
             Packet scPack;
             // Write block type and player's id into the packet
             scPack << (int)PACKET_TYPE_BLOCK;
             scPack << id;
             server->sendAllExcept(id, scPack);
-        }else if(type == PACKET_TYPE_GAMEOVER){
+        }
+        else if (type == PACKET_TYPE_GAMEOVER)
+        {
             // Create a packet to send game over state of the player
             Packet goPack;
             // Write gameover type and player's id into the packet
@@ -142,12 +156,10 @@ void Connection::run() {
             server->sendAllExcept(id, goPack);
             server->setGameOver(id);
         }
-
     }
-
 }
 
-string Connection::getName(){
+string Connection::getName()
+{
     return username;
 }
-

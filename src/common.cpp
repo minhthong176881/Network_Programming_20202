@@ -1,5 +1,5 @@
 
-#define TILE_SIZE 46
+#define TILE_SIZE 40
 
 #define PACKET_TYPE_LOBBY 0
 #define PACKET_TYPE_START 1
