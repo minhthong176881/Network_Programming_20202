@@ -60,7 +60,7 @@ public:
 
         font.loadFromFile("assets/font.TTF");
         text.setFont(font);
-        text.setCharacterSize(36);
+        text.setCharacterSize(18);
 
         currentPiece = Piece();
 
@@ -283,7 +283,7 @@ public:
         char scr[10];
         sprintf(scr, "%06d", score);
 
-        text.setPosition(350, 0);
+        text.setPosition(300, 0);
         text.setString(scr);
         renderer.draw(text);
 
@@ -305,17 +305,17 @@ public:
         {
             RectangleShape rect = RectangleShape(Vector2f(TILE_SIZE * 10, TILE_SIZE * 3));
             rect.setFillColor(Color::Red);
-            rect.setPosition(0, 660);
+            rect.setPosition(0, 500);
 
             renderer.draw(rect);
 
-            text.setCharacterSize(45);
-            text.setPosition(80, 700);
+            text.setCharacterSize(36);
+            text.setPosition(65, 540);
             text.setString("Game Over");
             renderer.draw(text);
 
-            text.setCharacterSize(18);
-            text.setPosition(50, 800);
+            text.setCharacterSize(15);
+            text.setPosition(40, 650);
 
             if (client == NULL)
             {

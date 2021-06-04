@@ -22,7 +22,7 @@ private:
         Join,
         Host,
         Singleplayer,
-        Exit
+        // Exit
     };
 
     enum Typing
@@ -48,12 +48,12 @@ private:
     string typeText = "";
     string address = "127.0.0.1";
 
-    string options[4] =
+    string options[3] =
         {
             "Single player",
             "Join game",
             "Host game",
-            "Exit game"
+            // "Exit game"
         };
 
     int selected = 0;
@@ -92,8 +92,8 @@ public:
             if (KeyboardManager::keyDown(Keyboard::Key::Down))
             {
                 selected++;
-                if (selected > 3)
-                    selected = 3;
+                if (selected > 2)
+                    selected = 2;
             }
 
             if (KeyboardManager::keyDown(Keyboard::Key::Up))
@@ -239,7 +239,7 @@ public:
         if (state == None)
         {
             lobbyText.setCharacterSize(48);
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 lobbyText.setString(options[i]);
                 lobbyText.setPosition(90 + (i == selected ? 45 : 0), 700 + 60 * i);
@@ -365,6 +365,7 @@ public:
             lobbyText.setCharacterSize(48);
             lobbyText.setPosition(70, 300);
             lobbyText.setString(client->getName(client->getGameWinner()) + " won the round!");
+            client->resetState();
             window.draw(lobbyText);
         }
     }
